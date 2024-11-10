@@ -18,8 +18,7 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
      */
     public AppPerhitunganDiskon() {
         initComponents();
-        jSlider1.setValue(5); // Sesuaikan nilai awal JSlider dengan opsi pertama di JComboBox
-        jComboBox1.setSelectedItem("5%");
+     
     }
 
     /**
@@ -85,6 +84,11 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
+            }
+        });
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
             }
         });
 
@@ -187,7 +191,32 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        hitungDiskon();
+           try {
+            double hargaAsli = Double.parseDouble(jTextField1.getText());
+            int persentaseDiskon = jSlider1.getValue();
+            double jumlahDiskon = hargaAsli * persentaseDiskon / 100.0;
+            double hargaSetelahDiskon = hargaAsli - jumlahDiskon;
+
+            String kodeKupon = jTextField2.getText().trim();
+            double diskonTambahan = 0.0;
+            if (kodeKupon.equals("10")) {
+                diskonTambahan = hargaSetelahDiskon * 0.10;
+                hargaSetelahDiskon -= diskonTambahan;
+            } else if (!kodeKupon.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Kode kupon tidak valid.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            }
+
+            jTextField3.setText(String.format("Rp %.2f", hargaSetelahDiskon));
+            jTextField4.setText(String.format("Rp %.2f", jumlahDiskon + diskonTambahan));
+
+            String hasil = String.format("Harga Asli: Rp %.2f, Diskon: %d%%, Harga Akhir: Rp %.2f, Penghematan: Rp %.2f%s",
+                    hargaAsli, persentaseDiskon, hargaSetelahDiskon, jumlahDiskon + diskonTambahan,
+                    (diskonTambahan > 0 ? " (dengan kupon 10)" : ""));
+            jTextArea1.append(hasil + "\n");
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Masukkan angka yang valid!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
@@ -199,48 +228,34 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
-       if (evt.getStateChange() == ItemEvent.SELECTED) {
-        int selectedValue = Integer.parseInt(jComboBox1.getSelectedItem().toString().replace("%", ""));
+         if (evt.getStateChange() == ItemEvent.SELECTED) {
+        // Retrieve and clean up the selected item text
+        String selectedItem = jComboBox1.getSelectedItem().toString().replace("%", "").trim();
 
-        // Update JSlider only if the value is different
-        if (jSlider1.getValue() != selectedValue) {
-            jSlider1.setValue(selectedValue);
+        try {
+            // Attempt to parse the cleaned-up string as an integer
+            int selectedValue = Integer.parseInt(selectedItem);
+
+            // Update JSlider only if the value is different
+            if (jSlider1.getValue() != selectedValue) {
+                jSlider1.setValue(selectedValue);
+            }
+        } catch (NumberFormatException e) {
+            // Handle invalid number format gracefully
+            System.out.println("Invalid number format: " + e.getMessage());
+            // Optionally, display an error message to the user
+            javax.swing.JOptionPane.showMessageDialog(null, "Please select a valid number.");
         }
     }
 
     }//GEN-LAST:event_jComboBox1ItemStateChanged
-private void hitungDiskon() {
-    try {
-        // Ambil input harga asli dan persentase diskon
-        double hargaAsli = Double.parseDouble(jTextField1.getText());
-        int persentaseDiskon = jSlider1.getValue(); // Ambil nilai dari JSlider
-        double jumlahDiskon = hargaAsli * persentaseDiskon / 100.0;
-        double hargaSetelahDiskon = hargaAsli - jumlahDiskon;
 
-        // Periksa apakah ada kode kupon diskon tambahan
-        String kodeKupon = jTextField2.getText().trim();
-        double diskonTambahan = 0.0;
-        if (kodeKupon.equalsIgnoreCase("10")) {
-            diskonTambahan = hargaSetelahDiskon * 0.10; // Diskon tambahan 10%
-            hargaSetelahDiskon -= diskonTambahan;
-        } else if (!kodeKupon.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Kode kupon tidak valid.", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        }
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        int selectedDiskon = Integer.parseInt(jComboBox1.getSelectedItem().toString().replace("%", ""));
+        jSlider1.setValue(selectedDiskon);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
-        // Tampilkan hasil
-        jTextField3.setText(String.format("Rp %.2f", hargaSetelahDiskon)); // Harga akhir
-        jTextField4.setText(String.format("Rp %.2f", jumlahDiskon + diskonTambahan)); // Total penghematan
-
-        // Tambahkan ke riwayat perhitungan
-        String hasil = String.format("Harga Asli: Rp %.2f, Diskon: %d%%, Harga Akhir: Rp %.2f, Penghematan: Rp %.2f%s",
-                hargaAsli, persentaseDiskon, hargaSetelahDiskon, jumlahDiskon + diskonTambahan,
-                (diskonTambahan > 0 ? " (dengan kupon 10)" : ""));
-        jTextArea1.append(hasil + "\n");
-
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Masukkan angka yang valid!", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
     /**
      * @param args the command line arguments
      */
