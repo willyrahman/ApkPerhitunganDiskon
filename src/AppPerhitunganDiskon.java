@@ -49,6 +49,8 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("AppPerhitunganDiskon"));
+
         jLabel1.setText("Harga Asli");
 
         jLabel2.setText("Kupon Diskon");
@@ -121,8 +123,8 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
                                         .addGap(43, 43, 43)
                                         .addComponent(jButton1)))
                                 .addGap(45, 45, 45)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(18, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -176,14 +178,14 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -211,7 +213,7 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
 
             String hasil = String.format("Harga Asli: Rp %.2f, Diskon: %d%%, Harga Akhir: Rp %.2f, Penghematan: Rp %.2f%s",
                     hargaAsli, persentaseDiskon, hargaSetelahDiskon, jumlahDiskon + diskonTambahan,
-                    (diskonTambahan > 0 ? " (dengan kupon 10)" : ""));
+                    (diskonTambahan > 0 ? " (dengan 10 kupon)" : ""));
             jTextArea1.append(hasil + "\n");
 
         } catch (NumberFormatException ex) {
@@ -228,12 +230,12 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
-         if (evt.getStateChange() == ItemEvent.SELECTED) {
-        // Retrieve and clean up the selected item text
-        String selectedItem = jComboBox1.getSelectedItem().toString().replace("%", "").trim();
-
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
         try {
-            // Attempt to parse the cleaned-up string as an integer
+            // Get the selected item from JComboBox, remove "%" symbol and trim spaces
+            String selectedItem = jComboBox1.getSelectedItem().toString().replace("%", "").trim();
+            
+            // Parse the trimmed string to an integer
             int selectedValue = Integer.parseInt(selectedItem);
 
             // Update JSlider only if the value is different
@@ -241,12 +243,12 @@ public class AppPerhitunganDiskon extends javax.swing.JFrame {
                 jSlider1.setValue(selectedValue);
             }
         } catch (NumberFormatException e) {
-            // Handle invalid number format gracefully
             System.out.println("Invalid number format: " + e.getMessage());
-            // Optionally, display an error message to the user
-            javax.swing.JOptionPane.showMessageDialog(null, "Please select a valid number.");
+            // Optionally, show an error message to the user
+            JOptionPane.showMessageDialog(this, "Invalid input in JComboBox. Please enter a valid number.", 
+                                          "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
-    }
 
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
