@@ -49,4 +49,4 @@ Aplikasi ini memungkinkan pengguna untuk memasukkan harga asli suatu barang dan 
 Willy Rahman 2210010103
 
 ## Demo
-![Demo GIF](https://github.com/willyrahman/ApkPerhitunganDiskon/blob/main/img/demo%20apkperhitungan%20diskon%20tgs%203.gif)
+![Demo GIF](https://github.com/willyrahman/ApkPerhitunganDiskon/blob/main/img/Demo%20tugas%203%20ApkPerhitunganDiskon.gif)
